@@ -9,8 +9,10 @@ Testing Framework:
 
 
 ## Tensor
+The practical implementation is a 1d array, and element indexing is performed through a strided indexing scheme.
+
 ### Usage
-```
+```C
 #include "src/tensor/tensor.h"
 int shape[] = { 10 };
 int img_shape[] = { 3,224,224 };
