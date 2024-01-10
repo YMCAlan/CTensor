@@ -45,17 +45,29 @@ Tensor* createTensor(int* shape, int dim, double val)
 	return tensor;
 }
 
+void freeTensor(Tensor** ptrTensor)
+{
+    if (ptrTensor && *ptrTensor) {
+        Tensor* tensor = *ptrTensor;
+        free(tensor->shape);
+        // Free the stride array
+        free(tensor->stride);
+        // Free the data array
+        free(tensor->data);
+        // Free the tensor structure itself
+        free(tensor);
+    }
+}
+
 int* computeStride(const int* shape, int size) {
     // Check for invalid input
     if (shape == NULL || size == 0) return NULL;
-
     int* stride = (int*)malloc(sizeof(int) * size);
 
     // Check for memory allocation failure
     if (stride == NULL) return NULL;
  
-    for (int i = size - 1; i >= 0; i--)
-    {
+    for (int i = size - 1; i >= 0; i--){
         stride[i] = (i == size - 1) ? 1 :shape[i + 1] * stride[i + 1];
     }
     return stride;
@@ -65,12 +77,10 @@ int* computeStride(const int* shape, int size) {
 int computeSize(int* shape, int dim)
 {
     if (shape == NULL) return 0;
-
     int size = 1;
     for (int i = 0; i < dim; i++) {
         size *= shape[i];
     }
-
     return size;
 }
 
@@ -128,8 +138,7 @@ void reshape(Tensor* self, const int* newShape, int newDim)
     assert(newSize == self->size);
     self->shape = (int*)malloc(newDim * sizeof(int));
     if (self->shape != NULL) {
-        for (int i = 0; i < newDim; i++)
-        {
+        for (int i = 0; i < newDim; i++){
             self->shape[i] = newShape[i];
         }
     }
@@ -137,6 +146,18 @@ void reshape(Tensor* self, const int* newShape, int newDim)
     self->stride = computeStride(newShape, newDim);
     self->size = computeSize(newShape, newDim);
 
+}
+
+void permute(Tensor* self, const int* permuted, int dim)
+{
+    int *newShape = (int*)malloc(dim * sizeof(int));
+    if (newShape != NULL) {
+        for (int i = 0; i < dim; i++) {
+            newShape[i] = self->shape[permuted[i]];
+        }
+    }
+    self->stride = computeStride(newShape, dim);
+    self->size = computeSize(newShape, dim);
 }
 
 void printTensor(Tensor* self)

@@ -29,12 +29,14 @@ struct tensor
     void (*setVal)(Tensor*, const int*, double); // Function to set a value in the tensor
     double (*getVal)(Tensor*, const int*);      // Function to get a value from the tensor
 
-    void (*reshape)(Tensor*, const int*, int);
+    void (*reshape)(Tensor*, const int*, int); // Function to reshape the tensor
+    void (*permute)(Tensor*, const int*, int); // Function to permute the tensor dimensions
 
     void (*print)(struct tensor*); // Function to print the tensor
 };
 
 Tensor* createTensor(int* shape, int dim, double val);
+void freeTensor(Tensor** ptrTensor);
 
 int* computeStride(int* shape, int size);
 int computeSize(int* shape, int dim);
