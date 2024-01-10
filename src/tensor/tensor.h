@@ -21,13 +21,15 @@ struct tensor
     double* data; // Array to store the actual data of the tensor
 
     // Methods
-    int* (*getShape)(const struct tensor*); // Function to get the shape of the tensor
-    int (*getDim)(const struct tensor*);    // Function to get the number of dimensions
-    int (*getSize)(const struct tensor*);   // Function to get the total size of the tensor
+    int* (*getShape)(const Tensor*); // Function to get the shape of the tensor
+    int (*getDim)(const Tensor*);    // Function to get the number of dimensions
+    int (*getSize)(const Tensor*);   // Function to get the total size of the tensor
 
-    int (*_index)(struct tensor*, const int*);      // Function to calculate the index in the data array
-    void (*setVal)(struct tensor*, const int*, double); // Function to set a value in the tensor
-    double (*getVal)(struct tensor*, const int*);      // Function to get a value from the tensor
+    int (*_index)(Tensor*, const int*);      // Function to calculate the index in the data array
+    void (*setVal)(Tensor*, const int*, double); // Function to set a value in the tensor
+    double (*getVal)(Tensor*, const int*);      // Function to get a value from the tensor
+
+    void (*reshape)(Tensor*, const int*, int);
 
     void (*print)(struct tensor*); // Function to print the tensor
 };
@@ -42,9 +44,13 @@ int* getShape(const Tensor* self);
 int getSize(const Tensor* self);
 int getDim(const Tensor* self);
 
-
+// access element method
 int _index(Tensor* self, const int * index);
 void setVal(Tensor* self, const int * index, double val);
 double getVal(Tensor* self, const int * index);
+
+// shape method
+void reshape(Tensor* self, const int* newShape, int newDim);
+
 void printTensor(Tensor* self);
 #endif // !TENSOR_H

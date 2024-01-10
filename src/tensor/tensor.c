@@ -1,6 +1,7 @@
 #include "tensor.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <memory.h>
 Tensor* createTensor(int* shape, int dim, double val)
 {
@@ -37,7 +38,7 @@ Tensor* createTensor(int* shape, int dim, double val)
         tensor->setVal = setVal;
         tensor->getVal = getVal;
 
-
+        tensor->reshape = reshape;
 
         tensor->print = printTensor;
 	}
@@ -118,6 +119,24 @@ double getVal(Tensor* self, const int * index)
     double val = 0.0;
     val = self->data[pos];
     return val;
+}
+
+
+void reshape(Tensor* self, const int* newShape, int newDim)
+{
+    int newSize = computeSize(newShape, newDim);
+    assert(newSize == self->size);
+    self->shape = (int*)malloc(newDim * sizeof(int));
+    if (self->shape != NULL) {
+        for (int i = 0; i < newDim; i++)
+        {
+            self->shape[i] = newShape[i];
+        }
+    }
+    self->dim = newDim;
+    self->stride = computeStride(newShape, newDim);
+    self->size = computeSize(newShape, newDim);
+
 }
 
 void printTensor(Tensor* self)
