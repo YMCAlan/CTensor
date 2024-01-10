@@ -20,6 +20,10 @@ Tensor* input = createTensor(shape, 1, 1.0);
 Tensor* image = createTensor(img_shape, 3, 0.0);
 ```
 
+## To Do
+* Decouple the method from the struct (Context).
+* Implement computing graph (Too hard for me :rofl:
+
 ## Contributions
 If you'd like to contribute to CTensor, please follow these steps:
 
