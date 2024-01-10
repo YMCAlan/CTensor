@@ -1,22 +1,16 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-#include"testStack.h"
-#include"testQueue.h"
-#include"testPair.h"
-#include"cuTest.h"
+#include"src/cuTest/cuTest.h"
 
-#include "tensor.h"
-#include "linear.h"
-#include "nn.h"
+#include "src/tensor/tensor.h"
+#include "src/linear/linear.h"
+#include "src/nn/nn.h"
 
 void RunAllTests(void) {
     // Create Suite
     CuString* output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
-    CuSuiteAddSuite(suite, TestStack());
-    CuSuiteAddSuite(suite, TestQueue());
-    CuSuiteAddSuite(suite, TestPair());
 
     // Run the tests
     CuSuiteRun(suite);
@@ -35,8 +29,10 @@ int main() {
     int img_shape[] = { 3,224,224 };
     Tensor* input = createTensor(shape, 1, 1.0);
     Tensor* image = createTensor(img_shape, 3, 0.0);
+    int new_img_shape[] = { 1, 3, 112, 112, 4, 1};
+    image->reshape(image, new_img_shape, 6);
     NN* nn = createNN();
-
+    
     nn->addLayer(nn, createLinear(10, 20, false));
     nn->addLayer(nn, createLinear(20, 30, false));
     nn->addLayer(nn, createLinear(30, 2, false));

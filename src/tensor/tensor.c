@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <memory.h>
+
 Tensor* createTensor(int* shape, int dim, double val)
 {
 	Tensor* tensor = (Tensor*)malloc(sizeof(Tensor));
