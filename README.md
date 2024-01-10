@@ -9,7 +9,7 @@ Testing Framework:
 
 
 ## Tensor
-# Example
+### Usage
 ```
 #include "src/tensor/tensor.h"
 int shape[] = { 10 };
@@ -24,3 +24,6 @@ If you'd like to contribute to CTensor, please follow these steps:
 1. Fork this repository to your GitHub account.
 2. Make your changes in a branch.
 3. Submit a pull request.
+
+## License
+This project is licensed under the LICENSE  - see the [LICENSE.md](https://github.com/YMCAlan/CTensor/blob/master/LICENSE.txt) file for details.
