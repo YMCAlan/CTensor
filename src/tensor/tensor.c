@@ -1,38 +1,44 @@
 #include "tensor.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <memory.h>
 Tensor* createTensor(int* shape, int dim, double val)
 {
 	Tensor* tensor = (Tensor*)malloc(sizeof(Tensor));
-	if (tensor) {
+	if (tensor != NULL) {
         tensor->shape = (int*)malloc(dim * sizeof(int));
         if (tensor->shape != NULL) {
-            for (int i = 0; i < dim; i++) {
+            for (int i = 0; i < dim; i++)
+            {
                 tensor->shape[i] = shape[i];
             }
         }
 
 		tensor->dim = dim;
+
+        // Compute stride and size
 		tensor->stride = computeStride(shape, dim);
         tensor->size = computeSize(shape, dim);
 
         tensor->data = (double*)malloc(tensor->size * sizeof(double));
-        
+
         if (tensor->data != NULL) {
             for (int i = 0; i < tensor->size; i++) {
                 tensor->data[i] = val;
             }
         }
 
-        // method
-        tensor->getSize = getSize;
-        tensor->getDim = getDim;
+        // Assign methods
         tensor->getShape = getShape;
+        tensor->getDim = getDim;
+        tensor->getSize = getSize;
 
         tensor->_index = _index;
         tensor->setVal = setVal;
         tensor->getVal = getVal;
+
+
+
         tensor->print = printTensor;
 	}
 	return tensor;
@@ -67,10 +73,9 @@ int computeSize(int* shape, int dim)
     return size;
 }
 
-
-Tensor* getSelf(const Tensor* self)
+int* getShape(const Tensor* self)
 {
-    return self;
+    return self->shape;
 }
 
 int getSize(const Tensor * self)
@@ -83,10 +88,6 @@ int getDim(const Tensor* self)
     return self->dim;
 }
 
-int* getShape(const Tensor* self)
-{
-    return self->shape;
-}
 
 int _index(Tensor* self, const int * index)
 {   
@@ -121,7 +122,7 @@ double getVal(Tensor* self, const int * index)
 
 void printTensor(Tensor* self)
 {
-    for (int i = 0; i < self->size; i++) {
+    for (int i = 0; i < self->getSize(self); i++) {
         printf("Tensor[%d] = %2.5lf\n", i, self->data[i]);
     }
     printf("\n\n");
