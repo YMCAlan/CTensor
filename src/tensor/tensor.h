@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+
 // Forward declaration
 typedef struct tensor Tensor;
 
@@ -31,7 +32,6 @@ struct tensor
 
     void (*reshape)(Tensor*, const int*, int); // Function to reshape the tensor
     void (*permute)(Tensor*, const int*, int); // Function to permute the tensor dimensions
-
     void (*print)(struct tensor*); // Function to print the tensor
 };
 
@@ -53,6 +53,7 @@ double getVal(Tensor* self, const int * index);
 
 // shape method
 void reshape(Tensor* self, const int* newShape, int newDim);
-
+void permute(Tensor* self, const int* permuted, int dim);
 void printTensor(Tensor* self);
+void prettyPrintTensor(const Tensor* self, int* indices, int currentDim);
 #endif // !TENSOR_H

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <memory.h>
+
 
 Tensor* createTensor(int* shape, int dim, double val)
 {
@@ -10,10 +10,7 @@ Tensor* createTensor(int* shape, int dim, double val)
 	if (tensor != NULL) {
         tensor->shape = (int*)malloc(dim * sizeof(int));
         if (tensor->shape != NULL) {
-            for (int i = 0; i < dim; i++)
-            {
-                tensor->shape[i] = shape[i];
-            }
+            memcpy(tensor->shape, shape, dim * sizeof(int));
         }
 
 		tensor->dim = dim;
@@ -40,7 +37,7 @@ Tensor* createTensor(int* shape, int dim, double val)
         tensor->getVal = getVal;
 
         tensor->reshape = reshape;
-
+        tensor->permute = permute;
         tensor->print = printTensor;
 	}
 	return tensor;
@@ -57,6 +54,7 @@ void freeTensor(Tensor** ptrTensor)
         free(tensor->data);
         // Free the tensor structure itself
         free(tensor);
+        *ptrTensor = NULL;
     }
 }
 
@@ -75,7 +73,7 @@ int* computeStride(const int* shape, int size) {
 }
 
 
-int computeSize(int* shape, int dim)
+int computeSize(const int* shape, int dim)
 {
     if (shape == NULL) return 0;
     int size = 1;
@@ -163,8 +161,25 @@ void permute(Tensor* self, const int* permuted, int dim)
 
 void printTensor(Tensor* self)
 {
-    for (int i = 0; i < self->getSize(self); i++) {
-        printf("Tensor[%d] = %2.5lf\n", i, self->data[i]);
+    int *indices = (int*)malloc(self->dim *  sizeof(int));
+    for (int i = 0; i < self->dim; i++) {
+        indices[i] = 0;
     }
-    printf("\n\n");
+
+    prettyPrintTensor(self, indices, 0);
+    printf("\n");
+}
+
+void prettyPrintTensor(const Tensor* self, int* indices, int currentDim) {
+    if (currentDim == self->dim) {
+        printf("%2.2lf ", self->getVal(self, indices));
+    }
+    else {
+        printf("[ ");
+        for (int i = 0; i < self->shape[currentDim]; i++) {
+            indices[currentDim] = i;
+            prettyPrintTensor(self, indices, currentDim + 1);
+        }
+        printf("] ");
+    }
 }
