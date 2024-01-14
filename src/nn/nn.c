@@ -2,6 +2,7 @@
 #include "../tensor/tensor.h"
 #include "../linear/linear.h"
 #include <stdlib.h>
+
 NN* createNN()
 {
 	NN* nn = (NN*)malloc(sizeof(NN));

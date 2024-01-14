@@ -165,7 +165,6 @@ void printTensor(Tensor* self)
     for (int i = 0; i < self->dim; i++) {
         indices[i] = 0;
     }
-
     prettyPrintTensor(self, indices, 0);
     printf("\n");
 }
