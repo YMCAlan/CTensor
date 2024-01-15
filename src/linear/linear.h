@@ -2,16 +2,23 @@
 #ifndef LINEAR_H
 #define LINEAR_H
 #include "../tensor/tensor.h"
+#include "../nn/module.h"
 typedef struct linear Linear;
 
 struct linear
 {
+	// AbstractFactory for forward and backward
+	NNModule base;
+
 	int in_features;
 	int out_features;
+
 	Tensor* weight;
 	Tensor* bias;
-	Tensor* (*forward)(Linear*, Tensor*);
-	void (*backward)(Linear*);
+	Tensor* gradInput;
+	Tensor* gradWeight;
+	Tensor* gradBias;
+
 };
 
 Linear* createLinear(int in_features, int out_features, bool bias);

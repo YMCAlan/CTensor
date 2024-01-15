@@ -1,6 +1,7 @@
 #include "tensor.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 #include <assert.h>
 
 
@@ -140,11 +141,13 @@ void reshape(Tensor* self, const int* newShape, int newDim)
         for (int i = 0; i < newDim; i++){
             self->shape[i] = newShape[i];
         }
+        self->dim = newDim;
+        self->stride = computeStride(newShape, newDim);
+        self->size = computeSize(newShape, newDim);
     }
-    self->dim = newDim;
-    self->stride = computeStride(newShape, newDim);
-    self->size = computeSize(newShape, newDim);
-
+    else {
+        ;
+    }
 }
 
 void permute(Tensor* self, const int* permuted, int dim)
@@ -154,9 +157,17 @@ void permute(Tensor* self, const int* permuted, int dim)
         for (int i = 0; i < dim; i++) {
             newShape[i] = self->shape[permuted[i]];
         }
+        // Free the previous stride array
+        free(self->stride);
+        // Update the shape, stride, and size
+        self->shape = newShape;
+        self->stride = computeStride(newShape, dim);
+        self->size = computeSize(newShape, dim);
     }
-    self->stride = computeStride(newShape, dim);
-    self->size = computeSize(newShape, dim);
+    else
+    {
+        printf("Permute function alloc failed.");
+    }
 }
 
 void printTensor(Tensor* self)
@@ -181,4 +192,35 @@ void prettyPrintTensor(const Tensor* self, int* indices, int currentDim) {
         }
         printf("] ");
     }
+}
+
+Tensor* matmul(const Tensor* A, const Tensor* B)
+{
+    return NULL;
+}
+
+Tensor* transpose(const Tensor* A)
+{
+    return NULL;
+}
+
+Tensor* add(const Tensor* input, const Tensor* other)
+{
+    // Determine the broadcast shape
+    int maxDim = input->dim > other->dim ? input->dim : other->dim;
+    int* broadcastShape = (int*)malloc(maxDim * sizeof(int));
+    int broadcastDim = 0;
+
+    for (int i = 0; i < maxDim; i++)
+    {
+        for (int i = 0; i < input->dim || i < other->dim; ++i) {
+            int dimA = (i < input->dim) ? input->shape[i] : 1;
+            int dimB = (i < other->dim) ? other->shape[i] : 1;
+            broadcastShape[i] = (dimA > dimB) ? dimA : dimB;
+            ++broadcastDim;
+        }
+
+    }
+
+    return nullptr;
 }

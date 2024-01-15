@@ -50,7 +50,6 @@ Tensor* forward(NN* nn, Tensor* input)
 	Tensor* output = NULL;
 	while (currLayer != NULL) {
 		Linear* linear = (Linear*)(currLayer->layerPtr);
-		output = linear->forward(linear, input);
 		input = output;
 		currLayer = currLayer->next;
 	}

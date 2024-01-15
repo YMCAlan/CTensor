@@ -35,25 +35,39 @@ struct tensor
     void (*print)(struct tensor*); // Function to print the tensor
 };
 
+// Function to create or free a tensor
 Tensor* createTensor(int* shape, int dim, double val);
 void freeTensor(Tensor** ptrTensor);
+
 
 int* computeStride(int* shape, int size);
 int computeSize(int* shape, int dim);
 
-// access attribute method
+// Access attribute methods
 int* getShape(const Tensor* self);
 int getSize(const Tensor* self);
 int getDim(const Tensor* self);
 
-// access element method
+// Access element methods
 int _index(Tensor* self, const int * index);
 void setVal(Tensor* self, const int * index, double val);
 double getVal(Tensor* self, const int * index);
 
-// shape method
+// Shape manipulation methods
 void reshape(Tensor* self, const int* newShape, int newDim);
 void permute(Tensor* self, const int* permuted, int dim);
 void printTensor(Tensor* self);
 void prettyPrintTensor(const Tensor* self, int* indices, int currentDim);
+
+// Operate function
+// Matrix multiplication
+Tensor* matmul(const Tensor* input, const Tensor* other);
+// Transpose
+Tensor* transpose(const Tensor* input);
+
+// Element-wise addition
+Tensor* add(const Tensor* input, const Tensor* other);
+
+
+
 #endif // !TENSOR_H

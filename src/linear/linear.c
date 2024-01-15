@@ -11,16 +11,16 @@ Linear* createLinear(int in_features, int out_features, bool bias)
 		linear->out_features = out_features;
 		
 		int weightShape[] = { out_features, in_features };
-		linear->weight = createTensor(weightShape, 2, 1.0);
+		linear->weight = createTensor(weightShape, 2, 0);
+		linear->gradWeight = createTensor(weightShape, 2, 0);
 
 		int biasShape[] = { out_features };
 		linear->bias = NULL;
+		linear->gradBias = NULL;
 		if (bias) {
 			linear->bias = createTensor(biasShape, 1, 1.0);
+			linear->gradBias = createTensor(biasShape, 1, 0.0);
 		}
-
-		linear->forward = forwardLinear;
-		linear->backward = NULL;
 	}
 	return linear;
 }
