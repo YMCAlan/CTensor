@@ -4,6 +4,7 @@
 #include <memory.h>
 #include <assert.h>
 
+#define T_INDEX(T, i, j, k) t->
 
 Tensor* createTensor(int* shape, int dim, double val)
 {
@@ -194,12 +195,7 @@ void prettyPrintTensor(const Tensor* self, int* indices, int currentDim) {
     }
 }
 
-Tensor* matmul(const Tensor* A, const Tensor* B)
-{
-    return NULL;
-}
-
-Tensor* transpose(const Tensor* A)
+Tensor* matmul(const Tensor* input, const Tensor* other)
 {
     return NULL;
 }
@@ -207,20 +203,7 @@ Tensor* transpose(const Tensor* A)
 Tensor* add(const Tensor* input, const Tensor* other)
 {
     // Determine the broadcast shape
-    int maxDim = input->dim > other->dim ? input->dim : other->dim;
-    int* broadcastShape = (int*)malloc(maxDim * sizeof(int));
-    int broadcastDim = 0;
-
-    for (int i = 0; i < maxDim; i++)
-    {
-        for (int i = 0; i < input->dim || i < other->dim; ++i) {
-            int dimA = (i < input->dim) ? input->shape[i] : 1;
-            int dimB = (i < other->dim) ? other->shape[i] : 1;
-            broadcastShape[i] = (dimA > dimB) ? dimA : dimB;
-            ++broadcastDim;
-        }
-
-    }
-
-    return nullptr;
+    
+    Tensor* result = NULL;
+    return result;
 }

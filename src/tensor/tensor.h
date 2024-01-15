@@ -62,9 +62,6 @@ void prettyPrintTensor(const Tensor* self, int* indices, int currentDim);
 // Operate function
 // Matrix multiplication
 Tensor* matmul(const Tensor* input, const Tensor* other);
-// Transpose
-Tensor* transpose(const Tensor* input);
-
 // Element-wise addition
 Tensor* add(const Tensor* input, const Tensor* other);
 
