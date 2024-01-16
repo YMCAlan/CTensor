@@ -61,10 +61,13 @@ Tensor* backwardLinear(NNModule* nnModule, Tensor* gradInput)
 	input->transpose(input);
 	self->gradWeight = matMul(input, gradInput); // (in, 1) * (1, out);
 	self->gradWeight->transpose(self->gradWeight);
+
 	//clear local memory
 	input = NULL;
 	self->gradBias = createTensor(SHAPE(self->out_features), 1, 1.0);
 	PRINT(self->gradBias);
+
+
 	// (1, out) * (out, in)
 	Tensor* gradOutput = matMul(gradInput, self->gradWeight);
 	return gradOutput;

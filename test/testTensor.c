@@ -1,7 +1,7 @@
 #include "testTensor.h"
 #include "cuTest.h"
 #include "../src/tensor/tensor.h"
-
+#include "../src/linear/linear.h"
 
 void TestCreateTensor(CuTest* tc) {
     // Test Case 1: Create a tensor with a shape of {2, 3}, dimension 2, and initial value 1.0
@@ -86,7 +86,7 @@ void TestComputeSize(CuTest* tc) {
     int size1 = computeSize(shape1, dim1);
 
     CuAssertIntEquals(tc, 24, size1);
-
+     
     // Test Case 2: Valid input with dimension 2
     int shape2[] = { 5, 6 };
     int dim2 = 2;
@@ -166,7 +166,7 @@ void TestIndexSetGet(CuTest* tc) {
 
     CuAssertIntEquals(tc, expectedPosition, _index(tensor1, index));
 
-    setVal(tensor1, index, 5.0);
+    setVal(tensor1, 5.0, index);
     CuAssertDblEquals(tc, 5.0, getVal(tensor1, index), 0.001);
 
     // Clean up
