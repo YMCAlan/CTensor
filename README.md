@@ -14,15 +14,17 @@ The practical implementation is a 1d array, and element indexing is performed th
 ### Usage
 ```C
 #include "src/tensor/tensor.h"
-int shape[] = { 10 };
-int img_shape[] = { 3,224,224 };
-Tensor* input = createTensor(shape, 1, 1.0);
-Tensor* image = createTensor(img_shape, 3, 0.0);
+Tensor* input = createTensor(SHAPE(10), 1, 1.0);
+Tensor* image = createTensor(SHAPE(3,224,224) , 3, 0.0);
+
+Linear* linear = createLinear(10, 20, true);
 ```
 
 ## To Do
-* Decouple the method from the struct (Context).
-* Implement computing graph (Too hard for me :rofl:
+* Decouple the method from the struct (Context). ❌
+* Implement computing graph (Too hard for me :rofl: 📝
+* Implement Convoulation. 📝
+* Implement Network hook. 📝
 
 ## Contributions
 If you'd like to contribute to CTensor, please follow these steps:
