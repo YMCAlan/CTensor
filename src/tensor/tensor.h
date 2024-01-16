@@ -7,6 +7,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define INDEX(...) ((int[]){__VA_ARGS__})
+#define SHAPE(...) ((int[]){__VA_ARGS__})
+#define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
+#define GET_VAL(t, ...) (t->getVal(t, ##__VA_ARGS__))
+#define SET_VAL(t, val,...) (t->setVal(t, val, ##__VA_ARGS__))
+#define PRINT(T) (T->print(T))
 // Forward declaration
 typedef struct tensor Tensor;
 
@@ -22,17 +29,20 @@ struct tensor
     double* data; // Array to store the actual data of the tensor
 
     // Methods
-    int* (*getShape)(const Tensor*); // Function to get the shape of the tensor
-    int (*getDim)(const Tensor*);    // Function to get the number of dimensions
-    int (*getSize)(const Tensor*);   // Function to get the total size of the tensor
+    int* (*getShape)(Tensor*); // Function to get the shape of the tensor
+    int (*getDim)(Tensor*);    // Function to get the number of dimensions
+    int (*getSize)(Tensor*);   // Function to get the total size of the tensor
 
-    int (*_index)(Tensor*, const int*);      // Function to calculate the index in the data array
-    void (*setVal)(Tensor*, const int*, double); // Function to set a value in the tensor
-    double (*getVal)(Tensor*, const int*);      // Function to get a value from the tensor
+    int (*_index)(Tensor*, int*);      // Function to calculate the index in the data array
+    void (*setVal)(Tensor*, double, int*); // Function to set a value in the tensor
+    double (*getVal)(Tensor*, int*);      // Function to get a value from the tensor
 
-    void (*reshape)(Tensor*, const int*, int); // Function to reshape the tensor
-    void (*permute)(Tensor*, const int*, int); // Function to permute the tensor dimensions
-    void (*print)(struct tensor*); // Function to print the tensor
+    Tensor* (*copy)(Tensor*);
+
+    void (*reshape)(Tensor*, int*, int); // Function to reshape the tensor
+    void (*permute)(Tensor*, int*, int); // Function to permute the tensor dimensions
+    void (*transpose)(Tensor*);
+    void (*print)(Tensor*); // Function to print the tensor
 };
 
 // Function to create or free a tensor
@@ -40,30 +50,37 @@ Tensor* createTensor(int* shape, int dim, double val);
 void freeTensor(Tensor** ptrTensor);
 
 
-int* computeStride(int* shape, int size);
-int computeSize(int* shape, int dim);
+int* computeStride(int * shape, int size);
+int computeSize(int * shape, int dim);
 
 // Access attribute methods
-int* getShape(const Tensor* self);
-int getSize(const Tensor* self);
-int getDim(const Tensor* self);
+int* getShape(Tensor * self);
+int getSize(Tensor * self);
+int getDim(Tensor * self);
 
 // Access element methods
-int _index(Tensor* self, const int * index);
-void setVal(Tensor* self, const int * index, double val);
-double getVal(Tensor* self, const int * index);
+int _index(Tensor* self, int * index);
+void setVal(Tensor* self, double val, int * index);
+double getVal(Tensor* self, int * index);
+
+// Copy function
+Tensor* copyTensor(Tensor* self);
 
 // Shape manipulation methods
-void reshape(Tensor* self, const int* newShape, int newDim);
-void permute(Tensor* self, const int* permuted, int dim);
+void reshape(Tensor* self, int * newShape, int newDim);
+void permute(Tensor* self, int * permuted, int dim);
+void transpose(Tensor* self);
 void printTensor(Tensor* self);
-void prettyPrintTensor(const Tensor* self, int* indices, int currentDim);
+void prettyPrintTensor(Tensor * self, int* indices, int currentDim);
 
 // Operate function
 // Matrix multiplication
-Tensor* matmul(const Tensor* input, const Tensor* other);
+Tensor* matMul(Tensor * input, Tensor * other);
+Tensor* dotProduct(Tensor * input, Tensor * other);
+Tensor* matProduct(Tensor * input, Tensor * other);
+
 // Element-wise addition
-Tensor* add(const Tensor* input, const Tensor* other);
+Tensor* add(Tensor * input, Tensor * other);
 
 
 

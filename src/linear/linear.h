@@ -8,11 +8,12 @@ typedef struct linear Linear;
 struct linear
 {
 	// AbstractFactory for forward and backward
-	NNModule base;
+	NNModule* baseLayer;
 
 	int in_features;
 	int out_features;
 
+	Tensor* input;
 	Tensor* weight;
 	Tensor* bias;
 	Tensor* gradInput;
@@ -23,6 +24,6 @@ struct linear
 
 Linear* createLinear(int in_features, int out_features, bool bias);
 
-Tensor* forwardLinear(Linear* self, Tensor* input);
-
+Tensor* forwardLinear(NNModule* nnModule, Tensor* input);
+Tensor* backwardLinear(NNModule* nnModule, Tensor* gradInput);
 #endif // !LINEAR_H
