@@ -1,15 +1,20 @@
 #pragma once
 #ifndef NN_H
 #define NN_H
-#include "nn.h"
-#include "../tensor/tensor.h"
+
 #include <stdbool.h>
+#include <stdlib.h>
+
+#include "module.h"
+#include "../tensor/tensor.h"
+#include "../linear/linear.h"
+#include "../utils/macro.h"
+
 // Forward declaration
-typedef struct nn NN;
-typedef struct layer Layer;
+typedef struct _nn NN;
+typedef struct _layer Layer;
 
-
-struct nn
+struct _nn
 {
 	int numsLayer;
 	Layer* first;
@@ -19,13 +24,14 @@ struct nn
 	Tensor* (*nnForward)(NN*, Tensor*);
 };
 
-struct layer
+struct _layer
 {
 	void* layerPtr;
 	Layer* next;
 };
 
 NN* createNN();
+void freeNN(void **nnPtr);
 Layer* createLayer(void* m);
 
 // add layer
@@ -33,5 +39,4 @@ bool addLayer(NN* nn, void* layerIn);
 
 // forward method
 Tensor* forward(NN*, Tensor*);
-
 #endif // !NN_H

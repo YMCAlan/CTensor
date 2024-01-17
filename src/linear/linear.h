@@ -3,12 +3,15 @@
 #define LINEAR_H
 #include "../tensor/tensor.h"
 #include "../nn/module.h"
-typedef struct linear Linear;
+#include "../utils/macro.h"
+#include <stdlib.h>
 
-struct linear
+typedef struct _linear Linear;
+
+struct _linear
 {
 	// AbstractFactory for forward and backward
-	NNModule* baseLayer;
+	NNModule* nnM;
 
 	int in_features;
 	int out_features;

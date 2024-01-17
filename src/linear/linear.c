@@ -1,6 +1,5 @@
 #include "../linear/linear.h"
-#include "../tensor/tensor.h"
-#include <stdlib.h>
+
 
 
 Linear* createLinear(int in_features, int out_features, bool bias)
@@ -20,7 +19,7 @@ Linear* createLinear(int in_features, int out_features, bool bias)
 			linear->bias = createTensor(SHAPE(out_features), 1, 1.0);
 			linear->gradBias = createTensor(SHAPE(out_features), 1, 0.0);
 		}
-		linear->baseLayer = createNNModule(forwardLinear, backwardLinear);
+		linear->nnM = createNNModule(forwardLinear, backwardLinear);
 	}
 	return linear;
 }
@@ -65,7 +64,7 @@ Tensor* backwardLinear(NNModule* nnModule, Tensor* gradInput)
 	//clear local memory
 	input = NULL;
 	self->gradBias = createTensor(SHAPE(self->out_features), 1, 1.0);
-	PRINT(self->gradBias);
+	PRINT_TENSOR(self->gradBias);
 
 
 	// (1, out) * (out, in)
