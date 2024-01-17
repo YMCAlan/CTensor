@@ -28,5 +28,14 @@ struct _conv
 	Tensor* gradBias;
 
 };
+
+Conv* createConv2d(int in_channels,
+	int out_channels,
+	int* kernel_size,
+	int* stride,
+	int* padding,
+	int* dilation,
+	int* groups,
+	char* padding_mode);
 #endif // !CONV_H
 
