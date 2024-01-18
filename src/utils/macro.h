@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ISNULL
-
 #define CHECK(condition, message) \
   do { \
     if (!(condition)) { \
@@ -32,10 +30,11 @@
         } \
     } while(0)
 
-#define MALLOC(TYPE, LENGTH) ((TYPE*)safeMalloc(sizeof(TYPE) * LENGTH));
+#define MALLOC(TYPE, SIZE) ((TYPE*)safeMalloc(sizeof(TYPE) * SIZE));
+#define REALLOC(PTR, TYPE, SIZE) ((TYPE*)safeRealloc(PTR,sizeof(TYPE) * SIZE))
 
 void* safeMalloc(size_t size);
-
+void* safeRealloc(void* ptr, size_t size);
 
 #define COPY_ARRAY(source, destination, size, type) \
     do { \

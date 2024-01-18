@@ -5,9 +5,7 @@ void TestCreateNN(CuTest* tc)
     NN* nn = createNN();
 
     CuAssertPtrNotNull(tc, nn);
-    CuAssertIntEquals(tc, 0, nn->numsLayer);
-    CuAssertPtrEquals(tc, NULL, nn->first);
-    CuAssertPtrEquals(tc, NULL, nn->last);
+    CuAssertIntEquals(tc, 0, nn->numModules);
 
     freeNN(&nn);
 }
@@ -17,22 +15,22 @@ void TestAddLayer(CuTest* tc)
     NN* nn = createNN();
     CuAssertPtrNotNull(tc, nn);
 
-    nn->addLayer(nn, createLinear(10, 20, true));
-    nn->addLayer(nn, createLinear(20, 30, true));
-    CuAssertIntEquals(tc, 2, nn->numsLayer);
-    CuAssertPtrNotNull(tc, nn->first);
+    nn->addModule(nn, createLinear(10, 20, true));
+    nn->addModule(nn, createLinear(20, 1, true));
+    CuAssertIntEquals(tc, 2, nn->numModules);
     freeNN(&nn);
 }
 
 void TestForward(CuTest* tc)
 {
     NN* nn = createNN();
-    nn->addLayer(nn, createLinear(10, 20, true));
-    nn->addLayer(nn, createLinear(20, 30, true));
-
-    Tensor* input = createTensor(SHAPE(1, 10), 1, 1.0);
-    Tensor* output = nn->nnForward(nn, input);
+    nn->addModule(nn, createLinear(10, 10, true));
+    nn->addModule(nn, createLinear(10, 10, true));
+    nn->addModule(nn, createLinear(10, 100, true));
+    Tensor* input = createTensor(SHAPE(1, 10), 2, 1.0);
+    Tensor* output = nn->forward(nn, input);
     PRINT_TENSOR(output);
+
 }
 
 CuSuite* TestNN(void)

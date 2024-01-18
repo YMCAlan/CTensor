@@ -148,6 +148,7 @@ Tensor* copyTensor(Tensor* original) {
 	memcpy(&newTensor->permute, &original->permute, sizeof(original->permute));
 	memcpy(&newTensor->transpose, &original->transpose, sizeof(original->transpose));
 	memcpy(&newTensor->print, &original->print, sizeof(original->print));
+	memcpy(&newTensor->copy, &original->copy, sizeof(original->copy));
 	return newTensor;
 }
 

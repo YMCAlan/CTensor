@@ -15,35 +15,18 @@
 typedef struct _nn NN;
 typedef struct _nnLayer NNLayer;
 
-typedef enum _layerType LayerType;
-typedef union _genericLayer GenericLayer;
-
-enum _layerType{
-	LINEAR,
-	CONV
-};
-
-union _genericLayer {
-	Linear* linearLayer;
-	Conv* convLayer;
-};
-
-struct _nnLayer {
-	LayerType type;
-	GenericLayer layer;
-};
-
-
 struct _nn
 {
-	int numsLayer;
-	NNLayer* first;
-	NNLayer* last;
-
-	bool (*addLayer)(NN*, void*);
-	Tensor* (*nnForward)(NN*, Tensor*);
+	int numModules;
+	NNModule** modules;
+	
+	void (*addModule)(NN*, void*);
+	Tensor* (*forward)(NN*, Tensor*);
 };
 
 NN* createNN();
-void freeNN(void **nnPtr);
+void freeNN(NN** nnPtr);
+void addModule(NN* nn, void* m);
+
+Tensor* forward(NN* nn, Tensor* input);
 #endif // !NN_H
