@@ -22,9 +22,8 @@ Linear* linear = createLinear(10, 20, true);
 
 ## To Do
 * Decouple the method from the struct.
-* Implement computing graph
 * Implement Convoulation. 📝
-* Implement Network hook. 📝
+* Implement Network container (may be generic. 📝
 
 ## Contributions
 If you'd like to contribute to CTensor, please follow these steps:
