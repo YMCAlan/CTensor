@@ -21,8 +21,8 @@ Linear* linear = createLinear(10, 20, true);
 ```
 
 ## To Do
-* Decouple the method from the struct (Context). ❌
-* Implement computing graph (Too hard for me :rofl: 📝
+* Decouple the method from the struct.
+* Implement computing graph
 * Implement Convoulation. 📝
 * Implement Network hook. 📝
 
