@@ -23,7 +23,7 @@ void addModule(NN* nn, void* m)
 		NNModule*,
 		(nn->numModules + 1)
 	);
-	nn->modules[nn->numModules++] = m;
+	nn->modules[nn->numModules++] = (NNModule*)m;
 
 }
 
@@ -32,6 +32,7 @@ Tensor* forward(NN* nn, Tensor* input)
 	Tensor* output = NULL;
 	Tensor* tempInput = input->copy(input);
 	for (int i = 0; i < nn->numModules; ++i) {
+		// TODO: How to generic container ?
 		Linear* tempModule = nn->modules[i];
 		tempInput = tempModule->nnM->forward((NNModule*)tempModule, tempInput);
 	}
