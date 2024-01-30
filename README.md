@@ -4,7 +4,7 @@ Tensor is a Multidimensional Array commonly used in deep learning.
 I am currently working on adding that feature.
 
 
-# Testing Framework:
+# Testing Framework
 * CuTest
 
 
